@@ -1,0 +1,26 @@
+# Objetos compilados
+*.o
+*.obj
+
+# Directorios de objetos (si usas carpetas como Obj/)
+Obj/
+obj/
+
+# Archivos temporales de editores comunes
+*~
+*.swp
+*.tmp
+
+# Archivos binarios
+$(BINARY)
+cub3d
+
+# Directorios de dependencias compiladas
+minilibx-linux/
+libft/
+
+# Archivos de logs
+*.log
+
+# Archivos de backup
+*.bak
