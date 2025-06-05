@@ -22,12 +22,18 @@ typedef struct s_camera {
     float offset_x;
     float offset_y;
 
+    float ray_x;
+    float ray_y;
+
     bool key_up;
     bool key_down;
     bool key_right;
     bool key_left;
 
-    float alpha;
+
+    bool rotate_right;
+    bool rotate_left;
+    float angle;
 } t_camera;
 
 typedef enum e_orientation {

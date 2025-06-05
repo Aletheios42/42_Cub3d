@@ -9,6 +9,7 @@ RM= rm -rf
 SRC_FILES = main.c \
 			parser.c \
 			mlx.c \
+			hooks.c \
 			player.c \
 			render.c 
 SRC_DIR = ./Src/
@@ -75,12 +76,12 @@ clean:
 	@printf "\n$(YE)Cleaning all object files from libft...$(RC)\n"
 	@make clean -sC $(LIBFT_DIR)
 	@printf "$(GR)Libft objects removed!$(RC)\n\n"
-	$(RM) $(OBJ_DIR)
+	@$(RM) $(OBJ_DIR)
 
 fclean: clean
 	@printf "\n$(YE)Cleaning all additional objects and libraries...$(RC)\n"
 	@make fclean -sC $(LIBFT_DIR)
-	$(RM) $(BINARY)
+	@$(RM) $(BINARY)
 	@printf "$(GR)All libraries removed!$(RC)\n\n"
 
 

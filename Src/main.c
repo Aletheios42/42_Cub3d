@@ -21,7 +21,7 @@ int main(int ac, char **av) {
 
     (void)ac;
     
-    ft_memset(&map, 0, sizeof(t_game));
+    ft_memset(&game, 0, sizeof(t_game));
     init_game(&game, &map, &mlx, &camera);
 
     ft_memset(&map, 0, sizeof(t_map));

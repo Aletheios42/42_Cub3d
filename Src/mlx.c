@@ -3,6 +3,18 @@
 #include <stdlib.h>
 
 
+void clear_image(t_mlx *mlx) {
+    int i;
+    int j;
+
+    j = -1;
+    while (++j < WIN_HEIGHT) {
+        i = -1;
+        while (++i < WIN_WIDTH)
+            my_pixel_put(mlx, i, j, 0);
+    }
+    mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
+}
 
 int close_window(t_mlx *mlx) {
   mlx_destroy_image(mlx->mlx, mlx->img);

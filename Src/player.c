@@ -1,54 +1,54 @@
 #include "../Inc/cube.h"
+#include <math.h>
+#include <stdio.h>
 
 
-int key_press(int keycode, void *param) {
-    t_game *game = 0x0;
-    game = (t_game *)param;
+int touch_wall(char ** map, float px, float py) {
+    int x = px / BLOCK;
+    int y = py / BLOCK;
 
-    if (keycode == KEY_ESC)
-        close_window(game->mlx);
-
-    else if (keycode == KEY_A)
-        game->camera->key_left = 1;
-    else if (keycode == KEY_D)
-        game->camera->key_right = 1;
-    else if (keycode == KEY_W)
-        game->camera->key_up = 1;
-    else if (keycode == KEY_S)
-        game->camera->key_down = 1;
-
-    render(game->map, game->mlx, game->camera);
-    return (0);
+    if (map[y][x] == '1')
+        return 1;
+    return 0;
 }
 
-int key_release(int keycode, void *param) {
-    t_game *game = 0x0;
-    game = (t_game *)param;
-
-
-    if (keycode == KEY_A)
-        game->camera->key_left = 0;
-    else if (keycode == KEY_D)
-        game->camera->key_right = 0;
-    else if (keycode == KEY_W)
-        game->camera->key_up = 0;
-    else if (keycode == KEY_S)
-        game->camera->key_down = 0;
-
-    return (0);
-}
-
+// repensar los += y -= con los angulos
 void move_player(t_camera *camera) {
-    int speed;
+    int offset_speed;
+    float angle_speed;
 
-    speed = 5;
-    if (camera->key_up)
-        camera->offset_y -= speed;
-    else if (camera->key_down)
-        camera->offset_y += speed;
-    else if (camera->key_left)
-        camera->offset_x -= speed;
-    else if (camera->key_right)
-        camera->offset_x += speed;
+    offset_speed = 5;
+    angle_speed = 0.1;
 
+    float cos_angle = cos(camera->angle);
+    float sin_angle = sin(camera->angle);
+
+    printf("angle: %f cos: %f  sin: %f \n ", camera->angle, cos_angle, sin_angle);
+
+
+    if (camera->rotate_left)
+        camera->angle += angle_speed;
+    if (camera->rotate_right)
+        camera->angle -= angle_speed;
+    if (camera->angle > 2 * PI)
+        camera->angle = 0;
+    if (camera->angle < 0)
+        camera->angle = 2 * PI;
+
+    if (camera->key_up) {
+        camera->offset_x += cos_angle * offset_speed;
+        camera->offset_y += sin_angle * offset_speed;
+    }
+    else if (camera->key_down) {
+        camera->offset_x -= cos_angle * offset_speed;
+        camera->offset_y -= sin_angle * offset_speed;
+    }
+    else if (camera->key_left) {
+        camera->offset_x += cos_angle * offset_speed;
+        camera->offset_y -= sin_angle * offset_speed;
+    }
+    else if (camera->key_right) {
+        camera->offset_x -= cos_angle * offset_speed;
+        camera->offset_y += sin_angle * offset_speed;
+    }
 }

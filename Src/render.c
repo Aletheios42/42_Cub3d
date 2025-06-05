@@ -1,18 +1,21 @@
 #include "../Inc/cube.h"
 #include "../minilibx-linux/mlx.h"
+#include <math.h>
 
 
-void clear_image(t_mlx *mlx) {
-    int i;
-    int j;
+void draw_pov(t_mlx *mlx, t_camera *camera, t_map *map) {
 
-    j = -1;
-    while (++j < WIN_HEIGHT) {
-        i = -1;
-        while (++i < WIN_WIDTH)
-            my_pixel_put(mlx, i, j, 0);
+    camera->ray_x = camera->offset_x;
+    camera->ray_y = camera->offset_y;
+    float cos_angle = cos(camera->angle);
+    float sin_angle = sin(camera->angle);
+
+    while (!touch_wall(map->map, camera->ray_x,camera->ray_y))
+    {
+        my_pixel_put(mlx, camera->ray_x, camera->ray_y, 0x0FF000);
+        camera->ray_x += cos_angle;
+        camera->ray_y += sin_angle;
     }
-    mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
 }
 
 void draw_square(t_mlx *mlx, int x, int y, int color) {
@@ -55,13 +58,15 @@ void draw_map(t_mlx *mlx, char **map) {
     }
 }
 
+
 e_exit_code render(t_map *map, t_mlx *mlx, t_camera *camera) {
 
-    (void)map;
     move_player(camera);
     clear_image(mlx);
     draw_map(mlx,  map->map);
     draw_square(mlx,  camera->offset_x , camera->offset_y, 0x00FF00);
+    draw_pov(mlx, camera, map);
+
     return SUCCESS;
 
 }
