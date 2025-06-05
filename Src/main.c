@@ -19,8 +19,8 @@ int main(int ac, char **av) {
     t_mlx mlx;
     t_camera camera;
 
-
-    if (ac == 2) {
+    (void)ac;
+    
     ft_memset(&map, 0, sizeof(t_game));
     init_game(&game, &map, &mlx, &camera);
 
@@ -35,11 +35,10 @@ int main(int ac, char **av) {
 
     render(&map, &mlx, &camera);
 
-    mlx_hook(mlx.win, 2, 1L << 0, key_press, &game);
-    mlx_hook(mlx.win, 3, 1L << 1, key_release, &game);
-    mlx_hook(mlx.win, 17, 1, close_window, &game);
+    mlx_hook(mlx.win, 2, 1L << 0, (void *)key_press, &game);
+    mlx_hook(mlx.win, 3, 1L << 1, (void *)key_release, &game);
+    mlx_hook(mlx.win, 17, 0, (void *)close_window, &game);
     mlx_loop(mlx.mlx);
-    }
 
     return 0;
 }

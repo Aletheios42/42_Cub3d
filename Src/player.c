@@ -17,6 +17,7 @@ int key_press(int keycode, void *param) {
     else if (keycode == KEY_S)
         game->camera->key_down = 1;
 
+    render(game->map, game->mlx, game->camera);
     return (0);
 }
 
@@ -35,4 +36,19 @@ int key_release(int keycode, void *param) {
         game->camera->key_down = 0;
 
     return (0);
+}
+
+void move_player(t_camera *camera) {
+    int speed;
+
+    speed = 5;
+    if (camera->key_up)
+        camera->offset_y -= speed;
+    else if (camera->key_down)
+        camera->offset_y += speed;
+    else if (camera->key_left)
+        camera->offset_x -= speed;
+    else if (camera->key_right)
+        camera->offset_x += speed;
+
 }

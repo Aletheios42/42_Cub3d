@@ -11,11 +11,12 @@ e_exit_code render(t_map *, t_mlx *, t_camera *);
 // MLX.C
 e_exit_code init_mlx(t_mlx *);
 void my_pixel_put(t_mlx *, int, int, int);
+void clear_image(t_mlx *mlx);
 int close_window(t_mlx *);
-int handle_key_events(int keycode, void *param);
 
 //PLAYER.C
-int key_press(int keycode, void *param);
-int key_release(int keycode, void *param);
+int key_press(int , void *);
+int key_release(int , void *);
+void move_player(t_camera *);
 
 #endif

@@ -80,7 +80,7 @@ clean:
 fclean: clean
 	@printf "\n$(YE)Cleaning all additional objects and libraries...$(RC)\n"
 	@make fclean -sC $(LIBFT_DIR)
-	@make clean -sC $(MLX_DIR)
+	$(RM) $(BINARY)
 	@printf "$(GR)All libraries removed!$(RC)\n\n"
 
 

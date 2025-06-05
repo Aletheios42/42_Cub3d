@@ -12,6 +12,7 @@ int close_window(t_mlx *mlx) {
 }
 
 
+
 void my_pixel_put(t_mlx *mlx, int x, int y, int color) {
     char *dst;
 

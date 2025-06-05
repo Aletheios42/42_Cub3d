@@ -1,12 +1,11 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
-
-
 typedef enum e_exit_code {
     SUCCESS,
     ERR_PASER,
     ERR_MLX_INIT,
+    ERR_FAIL_MALLOC,
 } e_exit_code;
 
 typedef struct s_mlx {
@@ -20,24 +19,25 @@ typedef struct s_mlx {
 } t_mlx;
 
 typedef struct s_camera {
-    int offset_x;
-    int offset_y;
+    float offset_x;
+    float offset_y;
 
     bool key_up;
     bool key_down;
     bool key_right;
     bool key_left;
 
-    int alpha;
+    float alpha;
 } t_camera;
 
 typedef enum e_orientation {
-    NO, ES, WE, SO
+    N, E, W, S
 } e_orientation;
 
 typedef struct s_map {
     char **map;
     e_orientation orientation;
+
 } t_map;
 
 typedef struct s_game {
