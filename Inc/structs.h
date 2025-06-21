@@ -29,10 +29,9 @@ typedef struct s_camera {
     bool key_down;
     bool key_right;
     bool key_left;
-
-
     bool rotate_right;
     bool rotate_left;
+
     float angle;
 } t_camera;
 
