@@ -2,7 +2,6 @@
 #include "../minilibx-linux/mlx.h"
 #include <stdlib.h>
 
-
 void clear_image(t_mlx *mlx) {
     int i;
     int j;
@@ -23,8 +22,6 @@ int close_window(t_mlx *mlx) {
   exit(0);
 }
 
-
-
 void my_pixel_put(t_mlx *mlx, int x, int y, int color) {
     char *dst;
 
@@ -36,7 +33,7 @@ void my_pixel_put(t_mlx *mlx, int x, int y, int color) {
 }
 
 
-e_exit_code init_mlx(t_mlx *mlx) {
+e_exit_status init_mlx(t_mlx *mlx) {
   mlx->mlx = mlx_init();
   mlx->win = mlx_new_window(mlx->mlx, WIN_WIDTH, WIN_HEIGHT, "Cub3D");
   mlx->img = mlx_new_image(mlx->mlx, WIN_WIDTH, WIN_HEIGHT);

@@ -1,17 +1,22 @@
-BINARY=cub3d
+BINARY = cub3d
 
-CC= gcc
-C_FLAGS= -Wall -Wextra -Werror
+CC = gcc
+C_FLAGS = -Wall -Wextra -Werror
 C_FLAGS += -g3 -fsanitize=address
 
-RM= rm -rf
+RM = rm -rf
 
-SRC_FILES = main.c \
-			parser.c \
-			mlx.c \
-			hooks.c \
-			player.c \
-			render.c 
+SRC_FILES = main.c 				\
+			parser.c 			\
+			mlx.c 				\
+			hooks.c 			\
+			player.c 			\
+			render.c 			\
+			handlers.c 			\
+			handlers_utils.c 	\
+			validate_map.c 		\
+			free.c		 		\
+			print.c
 SRC_DIR = ./Src/
 SRC := $(addprefix $(SRC_DIR),$(SRC_FILES))
 
@@ -20,26 +25,27 @@ OBJ_DIR = ./Obj/
 OBJ := $(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC))
 
 #INCLUDES
+INC_FILES	= cub3d.h 			\
+			  defines.h			\
+			  structs.h
 INC_DIR		= ./Inc/
-INC_FILES	= cub3d.h \
-			  structs.h \
-
-INC			:= $(addprefix $(INC_DIR), $(INC_FILES))
+INC := $(addprefix $(INC_DIR), $(INC_FILES))
 
 #LIBRARIES
 ##LIBFT
-LIBFT_DIR=./libft/
-LIBFT:= $(LIBFT_DIR)libft.a
-LIBFT_LD = -L $(LIBFT_DIR)  -lft 
+LIBFT_DIR =./libft/
+LIBFT := $(LIBFT_DIR)libft.a
+LIBFT_LD = -L $(LIBFT_DIR) -lft 
 
 ##MLX
 MLX_DIR = ./minilibx-linux/
 MLX := $(MLX_DIR)libmlx.a
-MLX_LD :=   -L $(MLX_DIR)  -lbsd -lmlx -lXext -lX11
+MLX_LD := -L $(MLX_DIR)  -lbsd -lmlx -lXext -lX11
 
 ##MATH_H
 MATH_LD = -lm
 
+## LINKER
 LD_FLAGS := $(LIBFT_LD) $(MLX_LD) $(MATH_LD)
 
 # Rules
@@ -47,7 +53,7 @@ all: $(BINARY)
 
 $(BINARY): $(OBJ) $(LIBFT) $(MLX)
 	@printf "\n$(CY)Generating $(BINARY) executable...$(RC)\n"
-	$(CC) $(C_FLAGS) -o $(BINARY) $(OBJ) $(LD_FLAGS)
+	$(CC) $(C_FLAGS) $(OBJ) $(LD_FLAGS) -o $(BINARY)
 	@printf "$(GR)Done!$(RC)\n\n"
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c

@@ -4,7 +4,9 @@
 char *ft_strarraystr(const char *str, char **patterns) {
     char *earliest = NULL;
     int i = 0;
-    size_t len = ft_strlen(str);
+    size_t len;
+
+    len = ft_strlen(str);
     
     if (!str || !patterns)
         return NULL;

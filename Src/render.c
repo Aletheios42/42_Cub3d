@@ -59,7 +59,7 @@ void draw_map(t_mlx *mlx, char **map) {
 }
 
 
-e_exit_code render(t_map *map, t_mlx *mlx, t_camera *camera) {
+e_exit_status render(t_map *map, t_mlx *mlx, t_camera *camera) {
 
     move_player(camera);
     clear_image(mlx);

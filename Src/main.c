@@ -7,38 +7,35 @@ void init_camera(t_camera *camera) {
     camera->offset_y = WIN_HEIGHT / 2;
 }
 
-void init_game(t_game *game, t_map *map, t_mlx *mlx, t_camera *camera) {
-    game->map = map;
-    game->mlx = mlx;
-    game->camera = camera;
-}
-
 int main(int ac, char **av) {
     t_game game;
-    t_map map;
-    t_mlx mlx;
-    t_camera camera;
+    e_exit_status status;
 
-    (void)ac;
-    
+    if (ac != 2)
+        return 0;
     ft_memset(&game, 0, sizeof(t_game));
-    init_game(&game, &map, &mlx, &camera);
 
-    ft_memset(&map, 0, sizeof(t_map));
-    parser(&map, av + 1);
+    status = parser(&(game.map), av[1]);
+    // DEBUG
+    // printf("status del parser: %d\n", status);
+    // print_map(game.map);
+    if (SUCCESS != status) {
+        free_map(&(game.map));
+        printf("Fallo el parser\n");
+        return status;
+    }
 
-    ft_memset(&mlx, 0, sizeof(t_mlx));
-    init_mlx(&mlx);
+    init_mlx(&(game.mlx));
 
-    ft_memset(&camera, 0, sizeof(t_camera));
-    init_camera(&camera);
+    // init_camera(&(game.camera));
 
-    render(&map, &mlx, &camera);
+    // render(&(game.map), &(game.mlx), &(game.camera));
+    //
+    // mlx_hook(game.mlx.win, 2, 1L << 0, (void *)key_press, &game);
+    // mlx_hook(game.mlx.win, 3, 1L << 1, (void *)key_release, &game);
+    // mlx_hook(game.mlx.win, 17, 0, (void *)close_window, &game);
+    // mlx_loop(game.mlx.mlx);
 
-    mlx_hook(mlx.win, 2, 1L << 0, (void *)key_press, &game);
-    mlx_hook(mlx.win, 3, 1L << 1, (void *)key_release, &game);
-    mlx_hook(mlx.win, 17, 0, (void *)close_window, &game);
-    mlx_loop(mlx.mlx);
-
-    return 0;
+    free_map(&(game.map));
+    return status;
 }
