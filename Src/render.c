@@ -1,72 +1,66 @@
 #include "../Inc/cube.h"
-#include "../minilibx-linux/mlx.h"
 #include <math.h>
 
+void draw_line(t_mlx *mlx, t_player *player, t_map *map, float pow_angle) {
 
-void draw_pov(t_mlx *mlx, t_camera *camera, t_map *map) {
+        player->ray_x = player->offset_x + (float)BLOCK_SIZE / 2;
+        player->ray_y = player->offset_y + (float)BLOCK_SIZE / 2;
+        float cos_angle = cos(pow_angle);
+        float sin_angle = sin(pow_angle);
+        while (!touch_wall(map->map, player->ray_x, player->ray_y))
+        {
+            my_pixel_put(mlx, player->ray_x, player->ray_y, BLUE);
+            player->ray_x += cos_angle;
+            player->ray_y += sin_angle;
+        }
+}
 
-    camera->ray_x = camera->offset_x;
-    camera->ray_y = camera->offset_y;
-    float cos_angle = cos(camera->angle);
-    float sin_angle = sin(camera->angle);
-
-    while (!touch_wall(map->map, camera->ray_x,camera->ray_y))
-    {
-        my_pixel_put(mlx, camera->ray_x, camera->ray_y, 0x0FF000);
-        camera->ray_x += cos_angle;
-        camera->ray_y += sin_angle;
+void draw_pov(t_mlx *mlx, t_player *player, t_map *map) {
+    float pow_angle = player->angle - DEGREE;
+    float pow_angle_limit = player->angle + DEGREE;
+    while (pow_angle < pow_angle_limit) {
+        draw_line(mlx, player, map, pow_angle);
+        pow_angle += PI / 3 / WIN_WIDTH;
     }
 }
 
 void draw_square(t_mlx *mlx, int x, int y, int color) {
     int i;
-    int size;
-
-    size = 20;
 
     i = -1;
-    while (++i < size)
+    while (++i < BLOCK_SIZE)
         my_pixel_put(mlx, x + i, y, color);
     i = -1;
-    while (++i < size)
+    while (++i < BLOCK_SIZE)
         my_pixel_put(mlx, x, y + i, color);
     i = -1;
-    while (++i < size)
-        my_pixel_put(mlx, x + size, y + i, color);
+    while (++i < BLOCK_SIZE)
+        my_pixel_put(mlx, x + BLOCK_SIZE, y + i, color);
     i = -1;
-    while (++i < size)
-        my_pixel_put(mlx, x + i, y + size, color);
+    while (++i < BLOCK_SIZE)
+        my_pixel_put(mlx, x + i, y + BLOCK_SIZE, color);
 
-    mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
 }
 
 void draw_map(t_mlx *mlx, char **map) {
-
-    int color;
     int i;
     int j;
-
-    color = 0xFF0000;
 
     i = -1;
     while (map[++i]) {
         j = -1;
         while (map[i][++j]) {
             if (map[i][j] == '1')
-                draw_square(mlx, j * BLOCK, i * BLOCK, color);
+                draw_square(mlx, j * BLOCK_SIZE, i * BLOCK_SIZE, RED);
         }
     }
 }
 
-
-e_exit_status render(t_map *map, t_mlx *mlx, t_camera *camera) {
-
-    move_player(camera);
+e_exit_status render(t_map *map, t_mlx *mlx, t_player *player) {
+    move_player(player);
     clear_image(mlx);
-    draw_map(mlx,  map->map);
-    draw_square(mlx,  camera->offset_x , camera->offset_y, 0x00FF00);
-    draw_pov(mlx, camera, map);
-
+    draw_map(mlx, map->map);
+    draw_square(mlx, player->offset_x, player->offset_y, GREEN);
+    draw_pov(mlx, player, map);
     return SUCCESS;
-
 }

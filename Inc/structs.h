@@ -86,7 +86,7 @@ typedef struct s_mlx {
     int     endian;
 } t_mlx;
 
-typedef struct s_camera {
+typedef struct s_player {
     float offset_x;
     float offset_y;
 
@@ -101,14 +101,14 @@ typedef struct s_camera {
     bool rotate_left;
 
     float angle;
-} t_camera;
+} t_player;
 
 
 
 typedef struct s_game {
     t_map map;
     t_mlx mlx;
-    t_camera camera;
+    t_player player;
 } t_game;
 
 #endif

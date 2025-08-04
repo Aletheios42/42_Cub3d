@@ -37,12 +37,12 @@ int key_press(int , void *);
 int key_release(int , void *);
 
 //PLAYER_C
-void move_player(t_camera *);
+void move_player(t_player *);
 
 //RENDER_C
-void draw_pov(t_mlx *, t_camera *, t_map *);
-int touch_wall(char **, float, float);
-e_exit_status render(t_map *, t_mlx *, t_camera *);
+void draw_pov(t_mlx *, t_player *, t_map *);
+int touch_wall(char **, float , float );
+e_exit_status render(t_map *, t_mlx *, t_player *);
 
 //PRINT_C
 void  print_map(t_map map);

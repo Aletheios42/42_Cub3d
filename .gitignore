@@ -15,10 +15,6 @@ obj/
 $(BINARY)
 cub3d
 
-# Directorios de dependencias compiladas
-minilibx-linux/
-libft/
-
 # Archivos de logs
 *.log
 

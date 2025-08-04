@@ -1,7 +1,6 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
-
 // Ventana
 #define WIN_HEIGHT 720
 #define WIN_WIDTH 720
@@ -17,7 +16,17 @@
 #define KEY_ESC 65307
 
 #define PI 3.14169
+#define DEGREE PI / 6
 
-#define BLOCK 50
+// el ancho y el alto del bloque 
+// tienen que ajustarse con
+// el ancho y la altura del map
+// // con el ancho y la altura de la ventana
+#define BLOCK_SIZE 18
+
+// Colores
+#define RED 0xFF0000
+#define GREEN 0x00FF00
+#define BLUE 0x0000FF
 
 #endif

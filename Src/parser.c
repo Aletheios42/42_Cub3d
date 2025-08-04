@@ -73,11 +73,12 @@ e_exit_status parser(t_map *map, char *map_path) {
     int i = 0;
     while (machine.current_state != STATE_END && machine.current_state != STATE_ERR) {
         line = get_next_line(fd);
+        machine.current_event = get_event_type(line);
+        machine.current_state = machine.transitions[machine.current_state][machine.current_event];
+        //  DEBUG
         printf("\n ============== \n");
         printf("Linea[%d]: %s", ++i, line);
-        machine.current_event = get_event_type(line);
         printf("Evento[%d]: %i\n", i, machine.current_event);
-        machine.current_state = machine.transitions[machine.current_state][machine.current_event];
         printf("Estado[%d]: %i\n", i, machine.current_state);
         status = machine.outputs[machine.current_state][machine.current_event](line, map, &machine);
         if (line)

@@ -8,13 +8,13 @@ RM = rm -rf
 
 SRC_FILES = main.c 				\
 			parser.c 			\
-			mlx.c 				\
-			hooks.c 			\
-			player.c 			\
-			render.c 			\
 			handlers.c 			\
 			handlers_utils.c 	\
 			validate_map.c 		\
+			mlx.c 				\
+			hooks.c 			\
+			render.c 			\
+			player.c 			\
 			free.c		 		\
 			print.c
 SRC_DIR = ./Src/
@@ -25,7 +25,7 @@ OBJ_DIR = ./Obj/
 OBJ := $(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC))
 
 #INCLUDES
-INC_FILES	= cub3d.h 			\
+INC_FILES	= cube.h 			\
 			  defines.h			\
 			  structs.h
 INC_DIR		= ./Inc/
@@ -56,7 +56,7 @@ $(BINARY): $(OBJ) $(LIBFT) $(MLX)
 	$(CC) $(C_FLAGS) $(OBJ) $(LD_FLAGS) -o $(BINARY)
 	@printf "$(GR)Done!$(RC)\n\n"
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c  $(INC)
 	@mkdir -p $(OBJ_DIR)
 	@printf "\n$(CY)Compiling $<...$(RC)\n"
 	$(CC) $(C_FLAGS) -c -I$(INC_DIR) $< -o $@

@@ -1,7 +1,6 @@
 #include "../Inc/cube.h"
 #include "../libft/libft.h"
 
-
 e_exit_status handler_texture(char *line, t_map *map, t_mealy *machine) {
     e_exit_status status;
     
@@ -34,8 +33,7 @@ e_exit_status handler_texture(char *line, t_map *map, t_mealy *machine) {
     
     return SUCCESS;
 }
-// da segfualt:
-// C 23,51,12AAAAAA
+
 e_exit_status handler_color(char *line, t_map *map, t_mealy *machine) {
     e_exit_status status;
     
@@ -64,7 +62,6 @@ e_exit_status handler_color(char *line, t_map *map, t_mealy *machine) {
     
     return SUCCESS;
 }
-
 
 e_exit_status handler_mapline(char *line, t_map *map, t_mealy *machine) {
     e_exit_status status;
@@ -100,7 +97,7 @@ e_exit_status handler_mapline(char *line, t_map *map, t_mealy *machine) {
     
     // Asignar a la estructura
     map->map[map->height] = map_line;
-    map->map[map->height + 1] = NULL;  // NULL terminator
+    map->map[map->height + 1] = NULL;
     map->width[map->height] = width;
     map->height++;
     
