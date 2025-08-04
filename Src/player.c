@@ -24,35 +24,27 @@ void handle_rotation(t_player *player) {
 }
 
 void handle_movement(t_player *player, t_map *map) {
-   int offset_speed = 5;
-   float cos_angle = cos(player->angle);
-   float sin_angle = sin(player->angle);
-   float new_x = player->offset_x;
-   float new_y = player->offset_y;
-   
-   if (player->key_up) {
-       new_x += cos_angle * offset_speed;
-       new_y += sin_angle * offset_speed;
-   }
-   else if (player->key_down) {
-       new_x -= cos_angle * offset_speed;
-       new_y -= sin_angle * offset_speed;
-   }
-   else if (player->key_left) {
-       new_x += cos_angle * offset_speed;
-       new_y -= sin_angle * offset_speed;
-   }
-   else if (player->key_right) {
-       new_x -= cos_angle * offset_speed;
-       new_y += sin_angle * offset_speed;
-   }
-   
-   if (!touch_wall(map->map, new_x + 
-               (float)BLOCK_SIZE/2, new_y 
-               + (float)BLOCK_SIZE/2)) {
-       player->offset_x = new_x;
-       player->offset_y = new_y;
-   }
+    int offset_speed;
+    float cos_angle;
+    float sin_angle;
+    float new_x;
+    float new_y;
+
+    offset_speed = 5;
+    cos_angle = cos(player->angle);
+    sin_angle = sin(player->angle);
+    new_x = player->offset_x;
+    new_y = player->offset_y;
+    new_x += offset_speed * ( cos_angle * (player->key_up - player->key_down)
+                            + sin_angle * (player->key_right - player->key_left));
+    new_y += offset_speed * ( sin_angle * (player->key_up - player->key_down)
+                            + cos_angle * (player->key_left - player->key_right));
+    if (!touch_wall(map->map,
+        new_x + (float)BLOCK_SIZE / 2,
+        new_y + (float)BLOCK_SIZE / 2)) {
+        player->offset_x = new_x;
+        player->offset_y = new_y;
+    }
 }
 
 void move_player(t_player *player, t_map *map) {

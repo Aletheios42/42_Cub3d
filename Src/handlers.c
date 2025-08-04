@@ -34,8 +34,10 @@ e_exit_status handler_texture(char *line, t_map *map, t_mealy *machine) {
     return SUCCESS;
 }
 
+//se puede reducir mucho el parse rgb porque ya sabemos que es valido
 e_exit_status handler_color(char *line, t_map *map, t_mealy *machine) {
     e_exit_status status;
+    int rgb_color;
     
     printf("Ejecutando el handler: color\n");
     line += 2;
@@ -51,11 +53,16 @@ e_exit_status handler_color(char *line, t_map *map, t_mealy *machine) {
     if (machine->tokens_mask & (1 << machine->current_event))
         return ERR_DUPLICATED_FIELD;
     
+    // Parsear RGB a entero
+    rgb_color = parse_rgb_to_int(line);
+    if (rgb_color == -1)
+        return ERR_INVALID_RGB;
+    
     // Asignar color según evento
     if (EVENT_COL_F == machine->current_event)
-        map->color_floor = ft_strdup(line);
+        map->color_floor = rgb_color;
     else if (EVENT_COL_C == machine->current_event)
-        map->color_celing = ft_strdup(line);
+        map->color_ceiling = rgb_color;
     
     // Marcar como procesado
     machine->tokens_mask |= (1 << machine->current_event);
@@ -116,12 +123,6 @@ e_exit_status handler_error(char *line, t_map *map, t_mealy *machine) {
     return ERR_PARSER;
 }
 
-///
-/// POSIBLE CAMBIO
-///
-// // 0x3F = bits 0-5 (6 tokens) + 0x40 = bit 6 (jugador) = 0x7F total
-// if ((machine->tokens_mask & 0x7F) != 0x7F)
-//     return ERR_INVALID_MAP;
 e_exit_status handler_eof(char *line, t_map *map, t_mealy *machine) {
     printf("Ejecutando el handler: eof\n");
     (void)line;

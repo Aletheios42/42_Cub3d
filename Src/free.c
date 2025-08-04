@@ -25,16 +25,6 @@ void free_map(t_map *map) {
         map->texture_ea = NULL;
     }
     
-    // Liberar colores
-    if (map->color_floor) {
-        free(map->color_floor);
-        map->color_floor = NULL;
-    }
-    if (map->color_celing) {
-        free(map->color_celing);
-        map->color_celing = NULL;
-    }
-    
     // Liberar mapa
     if (map->map) {
         for (i = 0; map->map[i]; i++) {

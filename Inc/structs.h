@@ -17,6 +17,7 @@ typedef enum e_exit_status {
     ERR_BAD_EXTENSION,
     ERR_INVALID_TEXTURE,
     ERR_INVALID_COLOR_FORMAT,
+    ERR_INVALID_RGB,
     ERR_INVALID_COLOR_RANGE,
     ERR_INVALID_MAP_CHAR,
     ERR_DUPLICATED_PLAYER,
@@ -68,12 +69,12 @@ typedef struct s_map {
     char *texture_so;
     char *texture_we;
     char *texture_ea;
-    char *color_floor;
-    char *color_celing;
+    int color_floor;
+    int color_ceiling;
     e_orientation orientation;
     int player_pos[2];
     int height;
-    int *width; //hacerla puntero para evitar mapas cuadrados
+    int *width;
 } t_map;
 
 typedef struct s_mlx {

@@ -14,6 +14,7 @@ SRC_FILES = main.c 				\
 			mlx.c 				\
 			hooks.c 			\
 			render.c 			\
+			minimap.c 			\
 			player.c 			\
 			free.c		 		\
 			print.c

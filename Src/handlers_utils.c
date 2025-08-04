@@ -88,3 +88,36 @@ e_exit_status valid_mapline(char *line, t_map *map, t_mealy *machine, int *width
     
     return SUCCESS;
 }
+
+// Función para convertir "R,G,B" a int RGB
+ int parse_rgb_to_int(char *rgb_str) {
+    int r, g, b;
+    char *ptr = rgb_str;
+    
+    // Parsear R
+    r = ft_atoi(ptr);
+    while (*ptr && *ptr != ',')
+        ptr++;
+    if (*ptr != ',')
+        return (-1);
+    ptr++;
+    
+    // Parsear G
+    g = ft_atoi(ptr);
+    while (*ptr && *ptr != ',')
+        ptr++;
+    if (*ptr != ',')
+        return (-1);
+    ptr++;
+    
+    // Parsear B
+    b = ft_atoi(ptr);
+    
+    // Validar rangos [0-255]
+    if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
+        return (-1);
+    
+    // Convertir a formato RGB (0xRRGGBB)
+    return ((r << 16) | (g << 8) | b);
+}
+

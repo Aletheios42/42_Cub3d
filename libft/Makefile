@@ -52,6 +52,7 @@ SRC_FILES =	ft_isalpha.c		\
 		ft_strnstr.c		\
 		ft_free_matrix.c	\
 		ft_atoi.c		\
+		ft_atoi_base.c		\
 		ft_calloc.c		\
 		ft_realloc.c		\
 		ft_strdup.c		\

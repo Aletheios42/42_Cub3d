@@ -3,25 +3,17 @@
 #include "../minilibx-linux/mlx.h"
 
 void init_player(t_player *player, t_map map) {
-    player->offset_x = map.player_pos[0] * BLOCK_SIZE + (BLOCK_SIZE /2.0f);
-    player->offset_y = map.player_pos[1] * BLOCK_SIZE + (BLOCK_SIZE /2.0f);
-
-    // Establecer ángulo inicial según orientación del mapa
-    switch (map.orientation) {
-        case N:
-            player->angle = 3 * PI / 2;  // 270 grados
-            break;
-        case S:
-            player->angle = PI / 2;      // 90 grados
-            break;
-        case E:
-            player->angle = 0;           // 0 grados
-            break;
-        case W:
-            player->angle = PI;          // 180 grados
-            break;
-    }
+    player->offset_x = map.player_pos[0] * BLOCK_SIZE + HALF_BLOCK_SIZE;
+    player->offset_y = map.player_pos[1] * BLOCK_SIZE + HALF_BLOCK_SIZE;
     
+    if (N == map.orientation)
+        player->angle = 3 * PI / 2;
+    else if (S == map.orientation)
+        player->angle = PI / 2;
+    else if (E == map.orientation)
+        player->angle = 0;
+    else if (W == map.orientation)
+        player->angle = PI;
 }
 
 int main(int ac, char **av) {
@@ -33,18 +25,20 @@ int main(int ac, char **av) {
     ft_memset(&game, 0, sizeof(t_game));
 
     status = parser(&(game.map), av[1]);
-    //   DEBUG
-    printf("\n====================\n");
-    printf("Status del parser: %d\n", status);
-    print_map(game.map);
+    init_mlx(&(game.mlx));
+    init_player(&(game.player), game.map);
+
     if (SUCCESS != status) {
         free_map(&(game.map));
         printf("Fallo el parser\n");
         return status;
     }
-
-    init_mlx(&(game.mlx));
-    init_player(&(game.player), game.map);
+    //   DEBUG
+    if (DEBUG) {
+        print_map(game.map);
+        print_player(game.player);
+        print_mlx(game.mlx);
+    }
 
     render(&(game.map), &(game.mlx), &(game.player));
 
