@@ -15,39 +15,42 @@ void draw_line(t_mlx *mlx, t_player player, t_map *map, float pow_angle) {
         }
 }
 
+//El BLOCK TIENE QUE SER PROPIO
 void draw_pov(t_mlx *mlx, t_player *player, t_map *map) {
     float pow_angle;
     float pow_angle_limit;
 
     pow_angle = player->angle - HALF_FOW;
     pow_angle_limit = player->angle + HALF_FOW;
-    player->ray_x = player->offset_x + HALF_BLOCK_SIZE;
-    player->ray_y = player->offset_y + HALF_BLOCK_SIZE;
+    player->ray_x = player->offset_x;
+    player->ray_y = player->offset_y;
     while (pow_angle < pow_angle_limit) {
         draw_line(mlx, *player, map, pow_angle);
-        pow_angle += PI / 3 / WIN_WIDTH;
+        pow_angle += FOW / WIN_WIDTH;
     }
 }
 
+//El BLOCK TIENE QUE SER PROPIO
 void draw_square(t_mlx *mlx, int x, int y, int color) {
     int i;
 
+    my_pixel_put(mlx, x, y, color);
     i = -1;
     while (++i < BLOCK_SIZE)
-        my_pixel_put(mlx, x + i, y, color);
+        my_pixel_put(mlx, x + i  - HALF_BLOCK_SIZE, y  - HALF_BLOCK_SIZE, color);
     i = -1;
     while (++i < BLOCK_SIZE)
-        my_pixel_put(mlx, x, y + i, color);
+        my_pixel_put(mlx, x - HALF_BLOCK_SIZE, y + i - HALF_BLOCK_SIZE, color);
     i = -1;
     while (++i < BLOCK_SIZE)
-        my_pixel_put(mlx, x + BLOCK_SIZE, y + i, color);
+        my_pixel_put(mlx, x + HALF_BLOCK_SIZE, y + i - HALF_BLOCK_SIZE, color);
     i = -1;
     while (++i < BLOCK_SIZE)
-        my_pixel_put(mlx, x + i, y + BLOCK_SIZE, color);
-
+        my_pixel_put(mlx, x + i - HALF_BLOCK_SIZE, y + HALF_BLOCK_SIZE, color);
 }
 
-void draw_map(t_mlx *mlx, char **map) {
+//El BLOCK TIENE QUE SER PROPIO
+void draw_squared_map(t_mlx *mlx, char **map) {
     int i;
     int j;
 
@@ -61,8 +64,12 @@ void draw_map(t_mlx *mlx, char **map) {
     }
 }
 
-void draw_minimap(t_map *map, t_mlx *mlx,  t_player *player) {
-        draw_map(mlx, map->map);
-        draw_square(mlx, player->offset_x, player->offset_y, GREEN);
-        draw_pov(mlx, player, map);
+void draw_minimap(t_map *map, t_mlx *mlx,  t_player *player)
+{
+    draw_squared_map(mlx, map->map);
+    //Tengo que pensar que la posicion del player 
+    //en el mapa3D y en el minimapa , estan relacionadas 
+    //pero no son iguales
+    draw_square(mlx, player->offset_x, player->offset_y, GREEN);
+    draw_pov(mlx, player, map);
 }

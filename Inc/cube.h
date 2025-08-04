@@ -43,9 +43,10 @@ int key_release(int , void *);
 
 //PLAYER_C
 void move_player(t_player *, t_map *);
+void init_player(t_player *player, t_map *map);
 
 //RENDER_C
-int     touch_wall(char **, float , float );
+int     touch_wall(char **, float , float);
 e_exit_status   render(t_map *, t_mlx *, t_player *);
 
 //PRINT_C

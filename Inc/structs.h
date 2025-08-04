@@ -9,6 +9,7 @@ typedef enum e_exit_status {
     ERR_PARSER,
     ERR_INVALID_LINE,
     ERR_INVALID_MAP,
+    ERR_MAP_IS_NOT_CLOSE,
     ERR_OPEN,
     ERR_MLX_INIT,
     ERR_FAIL_MALLOC,
@@ -59,9 +60,6 @@ typedef struct s_mealy {
     uint8_t tokens_mask;
 } t_mealy;
 
-typedef enum e_orientation {
-    N, E, W, S
-} e_orientation;
 
 typedef struct s_map {
     char **map;
@@ -71,10 +69,10 @@ typedef struct s_map {
     char *texture_ea;
     int color_floor;
     int color_ceiling;
-    e_orientation orientation;
+    char orientation;
     int player_pos[2];
     int height;
-    int *width;
+    int width;
 } t_map;
 
 typedef struct s_mlx {
@@ -102,6 +100,11 @@ typedef struct s_player {
     bool rotate_left;
 
     float angle;
+    float cos_angle;
+    float sin_angle;
+    float angle_speed;
+
+    int offset_speed;
 } t_player;
 
 

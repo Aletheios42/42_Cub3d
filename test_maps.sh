@@ -1,65 +1,49 @@
 #!/bin/bash
 
-# Colores para output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 
-# Directorios de mapas
-INVALID_MAPS_DIR="invalidMaps"
-VALID_MAPS_DIR="maps"
+MAPS_DIR="maps"
 
-# Compilar el proyecto
-echo -e "${YELLOW}Compilando cub3d...${NC}"
-make
-if [ $? -ne 0 ]; then
-    echo -e "${RED}Error de compilación${NC}"
-    exit 1
-fi
-
-# Mapas inválidos esperados (deben fallar)
+# Mapas inválidos con prefijo "invalid" y su descripción
 declare -A invalid_maps=(
-    ["01.cub"]="mapa fragmentado"
-    ["02.cub"]="textuta WE empieza por espacios"
-    ["03.cub"]="mapa abierto"
-    ["04.cub"]="textura WE duplicada"
-    ["05.cub"]="falta textura WE"
-    ["06.cub"]="textura SO duplicada"
-    ["07.cub"]="falta archivo textura EA"
-    ["08.cub"]="mala extensión textura WE"
-    ["09.cub"]="no existe archivo textura EA"
-    ["10.cub"]="falta color del techo"
-    ["11.cub"]="color del suelo duplicado"
-    ["12.cub"]="suelo no tiene color"
-    ["13.cub"]="color del suelo inválido"
-    ["14.cub"]="letras inválidas después de color"
-    ["15.cub"]="no tiene mapa"
-    ["16.cub"]="mapa abierto (flood fill)"
-    ["17.cub"]="no hay jugador"
-    ["18.cub"]="hay 3 jugadores"
-    ["19.cub"]="hay 2 jugadores"
+    ["invalid01.cub"]="mapa fragmentado"
+    ["invalid02.cub"]="textura WE empieza por espacios"
+    ["invalid03.cub"]="mapa abierto"
+    ["invalid04.cub"]="textura WE duplicada"
+    ["invalid05.cub"]="falta textura WE"
+    ["invalid06.cub"]="textura SO duplicada"
+    ["invalid07.cub"]="falta archivo textura EA"
+    ["invalid08.cub"]="mala extensión textura WE"
+    ["invalid09.cub"]="no existe archivo textura EA"
+    ["invalid10.cub"]="falta color del techo"
+    ["invalid11.cub"]="color del suelo duplicado"
+    ["invalid12.cub"]="suelo no tiene color"
+    ["invalid13.cub"]="color del suelo inválido"
+    ["invalid14.cub"]="letras inválidas después de color"
+    ["invalid15.cub"]="no tiene mapa"
+    ["invalid16.cub"]="mapa abierto (flood fill)"
+    ["invalid17.cub"]="no hay jugador"
+    ["invalid18.cub"]="hay 3 jugadores"
+    ["invalid19.cub"]="hay 2 jugadores"
+    ["invalidcardinal.cub"]="cardinal inválido"
+    ["invalidtiny.cub"]="tiny inválido"
 )
 
-# Contadores
 total=0
 passed=0
 failed=0
 
 echo -e "\n${BLUE}Testing mapas INVÁLIDOS (deben fallar):${NC}\n"
-
-# Testear mapas inválidos
 for map in "${!invalid_maps[@]}"; do
-    if [ -f "$INVALID_MAPS_DIR/$map" ]; then
+    if [ -f "$MAPS_DIR/$map" ]; then
         total=$((total + 1))
         echo -n "Testing $map (${invalid_maps[$map]})... "
-        
-        # Ejecutar cub3d y capturar exit code
-        ./cub3d "$INVALID_MAPS_DIR/$map" > /dev/null 2>&1
-        exit_code=$?
-        
-        if [ $exit_code -ne 0 ]; then
+        ./cub3d "$MAPS_DIR/$map" > /dev/null 2>&1
+        if [ $? -ne 0 ]; then
             echo -e "${GREEN}PASS (falló correctamente)${NC}"
             passed=$((passed + 1))
         else
@@ -67,39 +51,27 @@ for map in "${!invalid_maps[@]}"; do
             failed=$((failed + 1))
         fi
     else
-        echo -e "${YELLOW}WARNING: $INVALID_MAPS_DIR/$map no encontrado${NC}"
+        echo -e "${YELLOW}WARNING: $MAPS_DIR/$map no encontrado${NC}"
     fi
 done
 
-echo -e "\n${BLUE}Testing otros mapas:${NC}\n"
-
-# Testear mapas restantes (cardinal.cub, tiny.cub, etc.)
-for map in $VALID_MAPS_DIR/*.cub; do
-    basename_map=$(basename "$map")
-    
-    # Saltar si ya fue testeado como inválido
-    if [[ -v invalid_maps["$basename_map"] ]]; then
-        continue
-    fi
-    
-    if [ -f "$map" ]; then
+echo -e "\n${BLUE}Testing mapas VÁLIDOS (deben pasar):${NC}\n"
+for map in "$MAPS_DIR"/*.cub; do
+    filename=$(basename "$map")
+    if [[ $filename != invalid* ]]; then
         total=$((total + 1))
-        echo -n "Testing $basename_map... "
-        
-        ./cub3d "$map" > /dev/null 2>&1
-        exit_code=$?
-        
-        if [ $exit_code -eq 0 ]; then
+        echo -n "Testing $filename... "
+        ./cub3d "$MAPS_DIR/$filename" > /dev/null 2>&1
+        if [ $? -eq 0 ]; then
             echo -e "${GREEN}PASS${NC}"
             passed=$((passed + 1))
         else
-            echo -e "${RED}FAIL (exit code: $exit_code)${NC}"
+            echo -e "${RED}FAIL (debería haber pasado)${NC}"
             failed=$((failed + 1))
         fi
     fi
 done
 
-# Resultados finales
 echo -e "\n${YELLOW}Resultados:${NC}"
 echo -e "Total: $total"
 echo -e "${GREEN}Passed: $passed${NC}"

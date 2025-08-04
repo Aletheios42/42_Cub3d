@@ -4,26 +4,18 @@
 e_exit_status valid_texture(char *line) {
     char *tmp;
     int fd;
-    
-    // Verificar extensión .xmp
+
     tmp = ft_strnstr(line, ".xpm", ft_strlen(line));
     if (!tmp)
         return ERR_BAD_EXTENSION;
-    
-    // Verificar formato válido después de .xpm
     tmp += 4;
     if (*tmp != '\n' && *tmp != '\0')
         return ERR_INVALID_TEXTURE;
-    
-    // Eliminar \n si existe
     *tmp = '\0';
-    
-    // Verificar que el archivo existe y es accesible
     fd = open(line, O_RDONLY);
     if (fd < 0)
         return ERR_INVALIAD_ROUTE_MAP;
     close(fd);
-    
     return SUCCESS;
 }
 
@@ -50,74 +42,57 @@ e_exit_status valid_rgb(char *line) {
         tmp++;
     if (*tmp != '\n' && *tmp != '\0')
         return ERR_INVALID_COLOR_FORMAT;
-    
     if (*tmp == '\n')
         *tmp = '\0';
-    
     return SUCCESS;
 }
 
-e_exit_status valid_mapline(char *line, t_map *map, t_mealy *machine, int *width) {
+e_exit_status valid_mapline(char *line, t_map *map, t_mealy *machine, int *width)
+{
     char *tmp;
     
     tmp = line;
     *width = 0;
-    
-    while (*tmp && *tmp != '\n') {
+    while (*tmp && *tmp != '\n' ) {
         if (!ft_strchr("01 NSEW", *tmp))
             return ERR_INVALID_MAP_CHAR;
-        
-        // Verificar orientación única
         if (ft_strchr("NSEW", *tmp) && (machine->tokens_mask & (1 << 6)))
             return ERR_DUPLICATED_PLAYER;
-        
         if (ft_strchr("NSEW", *tmp)) {
-            // Guardar posición y orientación
+            machine->tokens_mask |= (1 << 6);
             map->player_pos[0] = *width;
             map->player_pos[1] = map->height;
-            if (*tmp == 'N') map->orientation = N;
-            else if (*tmp == 'S') map->orientation = S;
-            else if (*tmp == 'E') map->orientation = E;
-            else if (*tmp == 'W') map->orientation = W;
-            
-            machine->tokens_mask |= (1 << 6);
+            map->orientation = *tmp;
         }
-        tmp++;
         (*width)++;
+        if (*tmp == '1' && *(tmp + 1) == ' ')
+            break;
+        tmp++;
     }
-    
     return SUCCESS;
 }
 
-// Función para convertir "R,G,B" a int RGB
- int parse_rgb_to_int(char *rgb_str) {
-    int r, g, b;
+int parse_rgb_to_int(char *rgb_str)
+{
+    int r;
+    int g;
+    int b;
     char *ptr = rgb_str;
     
-    // Parsear R
     r = ft_atoi(ptr);
     while (*ptr && *ptr != ',')
         ptr++;
     if (*ptr != ',')
         return (-1);
     ptr++;
-    
-    // Parsear G
     g = ft_atoi(ptr);
     while (*ptr && *ptr != ',')
         ptr++;
     if (*ptr != ',')
         return (-1);
     ptr++;
-    
-    // Parsear B
     b = ft_atoi(ptr);
-    
-    // Validar rangos [0-255]
     if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
         return (-1);
-    
-    // Convertir a formato RGB (0xRRGGBB)
     return ((r << 16) | (g << 8) | b);
 }
-

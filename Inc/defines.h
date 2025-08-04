@@ -7,6 +7,10 @@
 #define WIN_HEIGHT 720
 #define WIN_WIDTH 720
 
+// Minimap
+#define MINIMAP_HEIGHT WIN_HEIGHT / 10
+#define MINIMAP_WIDTH WIN_WIDTH / 10
+
 // Teclas
 #define KEY_LEFT 65361
 #define KEY_RIGHT 65363
@@ -27,8 +31,9 @@
 // tienen que ajustarse con
 // el ancho y la altura del map
 // // con el ancho y la altura de la ventana
-#define BLOCK_SIZE 18
+#define BLOCK_SIZE 8
 #define HALF_BLOCK_SIZE (float)BLOCK_SIZE / 2.0f
+#define HITBOX 2
 
 
 // Colores

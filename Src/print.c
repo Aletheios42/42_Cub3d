@@ -17,20 +17,9 @@ void print_map(t_map map) {
 
     printf("Jugador:\n");
     printf("  Posición: (%d, %d)\n", map.player_pos[0], map.player_pos[1]);
-    printf("  Orientación: ");
-    switch (map.orientation) {
-        case N: printf("N\n"); break;
-        case E: printf("E\n"); break;
-        case W: printf("W\n"); break;
-        case S: printf("S\n"); break;
-        default: printf("Desconocida\n"); break;
-    }
+    printf("  Orientación: %c\n", map.orientation);
 
-    printf("Altura del mapa: %d\n", map.height);
-
-    printf("Anchuras por línea:\n  ");
-    for (i = 0; i < map.height; ++i)
-        printf("%d ", map.width[i]);
+    printf("Dimensiones:\n Altura[%d] Anchura[%d]\n", map.height, map.width);
     printf("\n");
 
     printf("Mapa:\n");

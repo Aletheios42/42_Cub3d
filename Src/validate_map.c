@@ -1,114 +1,109 @@
 #include "../Inc/cube.h"
 #include "../libft/libft.h"
 
-// Normalizar anchos del mapa eliminando espacios finales e iniciales innecesarios
-void normalize_map(t_map *map) {
-    int min_leading_spaces = INT_MAX;
-    int i, j;
-    
-    // Encontrar el mínimo de espacios iniciales
-    for (i = 0; i < map->height; i++) {
-        int leading_spaces = 0;
-        while (leading_spaces < map->width[i] && map->map[i][leading_spaces] == ' ')
-            leading_spaces++;
-        
-        // Solo considerar filas no vacías
-        if (leading_spaces < map->width[i] && leading_spaces < min_leading_spaces)
-            min_leading_spaces = leading_spaces;
-    }
-    
-    // Si no hay contenido, no normalizar
-    if (min_leading_spaces == INT_MAX)
-        min_leading_spaces = 0;
-    
-    // Procesar cada fila
-    for (i = 0; i < map->height; i++) {
-        // Remover espacios iniciales comunes
-        if (min_leading_spaces > 0) {
-            int new_width = map->width[i] - min_leading_spaces;
-            if (new_width > 0) {
-                ft_memmove(map->map[i], map->map[i] + min_leading_spaces, new_width);
-                map->width[i] = new_width;
-            } else {
-                map->map[i][0] = '\0';
-                map->width[i] = 0;
-            }
-        }
-        
-        // Recortar espacios finales
-        j = map->width[i] - 1;
-        while (j >= 0 && map->map[i][j] == ' ')
-            j--;
-        
-        // Actualizar width real y terminar string
-        map->width[i] = j + 1;
-        if (map->width[i] >= 0)
-            map->map[i][map->width[i]] = '\0';
-    }
-}
+int get_common_initial_space(t_map *map)
+{
+    int num_common_spaces;
+    int i;
+    int j;
 
-// Flood fill para verificar que el mapa está cerrado
-e_exit_status flood_fill(t_map *map, int x, int y, char **visited) {
-    // Límites del mapa
-    if (y < 0 || y >= map->height || x < 0 || x >= map->width[y])
-        return ERR_INVALID_MAP;
-    
-    // Si llegamos a un borde y es espacio, el mapa está abierto
-    if (map->map[y][x] == ' ')
-        return ERR_INVALID_MAP;
-    
-    // Si es pared o ya visitado, OK
-    if (map->map[y][x] == '1' || visited[y][x])
-        return SUCCESS;
-    
-    // Marcar como visitado
-    visited[y][x] = 1;
-    
-    // Flood fill recursivo en 4 direcciones
-    if (flood_fill(map, x + 1, y, visited) != SUCCESS ||
-        flood_fill(map, x - 1, y, visited) != SUCCESS ||
-        flood_fill(map, x, y + 1, visited) != SUCCESS ||
-        flood_fill(map, x, y - 1, visited) != SUCCESS)
-        return ERR_INVALID_MAP;
-    
+    num_common_spaces = INT_MAX;
+    i = -1;
+    while (++i < map->height)
+    {
+        j = 0;
+        while (map->map[i][j] == ' ' && j < num_common_spaces)
+            j++;
+        if (j < num_common_spaces)
+            num_common_spaces = j;
+    }
+    return num_common_spaces;
+}
+e_exit_status normalize_map(t_map *map)
+{
+    char *normalized_line = NULL;
+    int num_common_spaces;
+    int i;
+    int j;
+
+    num_common_spaces = get_common_initial_space(map);
+    i = -1;
+    //tengo que normalizar aquí
+    while (++i < map->height)
+    {
+        j = -1;
+        normalized_line = (char *)malloc(sizeof(char *) * (map->width + 1));
+        if (!normalized_line)
+            return ERR_FAIL_MALLOC;
+        while (map->map[i][++j + num_common_spaces])
+            normalized_line[j] = map->map[i][j + num_common_spaces]; 
+        while (j < map->width)
+            normalized_line[j++] = ' ';
+        normalized_line[j] = '\0';
+        free(map->map[i]);
+        map->map[i] = normalized_line;
+    }
     return SUCCESS;
 }
 
-e_exit_status validate_map(t_map *map) {
-    char **visited;
+e_exit_status flood_fill(t_map *map, char **visited, int row, int col)
+{
+    printf("i[%d] j[%d] \n",  row, col);
+    printf("valor mapa [%c]\n", map->map[row][col]);
+
+    if (row >= map->height || row < 0 || col < 0 || col >= map->width)
+        return printf("out of bounds\n"),ERR_MAP_IS_NOT_CLOSE;
+    if (map->map[row][col] == ' ')
+        return printf("espacio encontrado\n"),ERR_MAP_IS_NOT_CLOSE;
+    if (visited[row][col] == '1' || map->map[row][col] == '1' )
+        return SUCCESS;
+
+    visited[row][col] = '1';
+
+    if (SUCCESS != flood_fill(map, visited, row - 1, col))
+        return ERR_MAP_IS_NOT_CLOSE;
+    if (SUCCESS != flood_fill(map, visited, row + 1, col))
+        return ERR_MAP_IS_NOT_CLOSE;
+    if (SUCCESS != flood_fill(map, visited, row, col + 1))
+        return ERR_MAP_IS_NOT_CLOSE;
+    if (SUCCESS != flood_fill(map, visited, row, col - 1))
+        return ERR_MAP_IS_NOT_CLOSE;
+    return SUCCESS;
+
+}
+
+e_exit_status check_map_is_closed(t_map *map) {
     e_exit_status status;
+    char **visited;
     int i;
-    
-    // Normalizar el mapa
-    normalize_map(map);
-    
-    // Verificar que hay al menos una línea
-    if (map->height == 0)
-        return ERR_INVALID_MAP;
-    
-    // Crear matriz de visitados
-    visited = malloc(sizeof(char*) * map->height);
+    int line_size;
+
+    visited = (char **)malloc((map->height + 1) * (sizeof(char *)));
     if (!visited)
         return ERR_FAIL_MALLOC;
-    
-    for (i = 0; i < map->height; i++) {
-        visited[i] = ft_calloc(map->width[i], sizeof(char));
-        if (!visited[i]) {
-            // Liberar memoria ya allocada
-            while (--i >= 0)
-                free(visited[i]);
-            free(visited);
-            return ERR_FAIL_MALLOC;
-        }
+    i = -1;
+    while (++i < map->height)
+    {
+        line_size = ft_strlen(map->map[i]);
+        visited[i] = (char *)malloc((line_size + 1) * sizeof(char));
+        if (!visited[i])
+            return ft_free_matrix(visited) ,ERR_FAIL_MALLOC;
+        ft_memset(visited[i], '0', line_size);
+        visited[i][line_size] = '\0';
     }
-    
-    // Flood fill desde la posición del jugador
-    status = flood_fill(map, map->player_pos[0], map->player_pos[1], visited);
-    
-    // Liberar memoria de visitados
-    for (i = 0; i < map->height; i++)
-        free(visited[i]);
-    free(visited);
-    
+    visited[i] = NULL;
+    printf("height[%d] width[%d]\n", map->height, map->width);
+    status = flood_fill(map, visited, map->player_pos[1], map->player_pos[0]);
+    ft_free_matrix(visited);
+    return status;
+}
+
+e_exit_status validate_map(t_map *map) {
+    e_exit_status status;
+
+    status = normalize_map(map);
+    if (SUCCESS != status)
+        return status;
+    status = check_map_is_closed(map);
     return status;
 }

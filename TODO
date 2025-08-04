@@ -1,7 +1,0 @@
-1. Integrar el minimapa con el juego, añadir macros MINIMAP_HEIGHT y MINIMAP_WIDTH y ponerlos como limites al draw_3d_walls().
-2. Añadir cos_angle y sin_angle a t_player para reducir el numero de llamadas a las funcines sin() y cos().
-3. Añadir texturas a las paredes y al jugador(una espada o algo).
-4. Añadir sistema de puertas, modificar el parser para permitir 'P', modificar touch_wall() y añadir la textura.
-5. Añadir un hook al raton para rotar.
-6. Revisar cuando el player esta tangente a un muro, uso BLOCK_SIZE y no esta muy fino.
-7. Mejorar el tamaño del bloque, BLOCK_SIZE teniendo uno para la coordenadas X Y, y ajustandolo al tamaño de la ventana, entre los elementos del mapa.

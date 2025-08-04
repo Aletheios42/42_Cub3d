@@ -4,7 +4,7 @@ int key_press(int keycode, void *param) {
     game = (t_game *)param;
 
     if (keycode == KEY_ESC)
-        close_window(&(game->mlx));
+        return close_window(&(game->mlx));
     else if (keycode == KEY_A)
         game->player.key_left = 1;
     else if (keycode == KEY_D)
