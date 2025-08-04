@@ -26,6 +26,7 @@ int key_release(int keycode, void *param) {
     t_game *game = 0x0;
     game = (t_game *)param;
 
+
     if (keycode == KEY_A)
         game->player.key_left = 0;
     else if (keycode == KEY_D)

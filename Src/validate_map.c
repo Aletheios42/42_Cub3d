@@ -1,26 +1,49 @@
 #include "../Inc/cube.h"
 #include "../libft/libft.h"
 
-// Normalizar anchos del mapa eliminando espacios finales innecesarios
+// Normalizar anchos del mapa eliminando espacios finales e iniciales innecesarios
 void normalize_map(t_map *map) {
-    int max_width = 0;
+    int min_leading_spaces = INT_MAX;
     int i, j;
     
-    // Encontrar el ancho máximo real
+    // Encontrar el mínimo de espacios iniciales
     for (i = 0; i < map->height; i++) {
-        if (map->width[i] > max_width)
-            max_width = map->width[i];
+        int leading_spaces = 0;
+        while (leading_spaces < map->width[i] && map->map[i][leading_spaces] == ' ')
+            leading_spaces++;
+        
+        // Solo considerar filas no vacías
+        if (leading_spaces < map->width[i] && leading_spaces < min_leading_spaces)
+            min_leading_spaces = leading_spaces;
     }
     
-    // Recortar espacios finales de cada fila
+    // Si no hay contenido, no normalizar
+    if (min_leading_spaces == INT_MAX)
+        min_leading_spaces = 0;
+    
+    // Procesar cada fila
     for (i = 0; i < map->height; i++) {
+        // Remover espacios iniciales comunes
+        if (min_leading_spaces > 0) {
+            int new_width = map->width[i] - min_leading_spaces;
+            if (new_width > 0) {
+                ft_memmove(map->map[i], map->map[i] + min_leading_spaces, new_width);
+                map->width[i] = new_width;
+            } else {
+                map->map[i][0] = '\0';
+                map->width[i] = 0;
+            }
+        }
+        
+        // Recortar espacios finales
         j = map->width[i] - 1;
         while (j >= 0 && map->map[i][j] == ' ')
             j--;
         
-        // Actualizar width real (sin espacios finales)
+        // Actualizar width real y terminar string
         map->width[i] = j + 1;
-        map->map[i][j + 1] = '\0';
+        if (map->width[i] >= 0)
+            map->map[i][map->width[i]] = '\0';
     }
 }
 

@@ -1,6 +1,5 @@
 #include "../Inc/cube.h"
 #include <math.h>
-#include <stdio.h>
 
 int touch_wall(char ** map, float px, float py) {
     int x = (px / BLOCK_SIZE);
@@ -11,44 +10,52 @@ int touch_wall(char ** map, float px, float py) {
     return 0;
 }
 
-// 1.revisar los if para ver si se puede mover en diagonal
-// 2.revisar poner aqui un touch wall porque da segfault si me muevo fuera del mapa
-// Es decir, encerrar al player
-void move_player(t_player *player) {
-    int offset_speed;
-    float angle_speed;
+void handle_rotation(t_player *player) {
+   float angle_speed = 0.1;
+   
+   if (player->rotate_left)
+       player->angle -= angle_speed;
+   if (player->rotate_right)
+       player->angle += angle_speed;
+   if (player->angle > 2 * PI)
+       player->angle = 0;
+   if (player->angle < 0)
+       player->angle = 2 * PI;
+}
 
-    offset_speed = 5;
-    angle_speed = 0.1;
+void handle_movement(t_player *player, t_map *map) {
+   int offset_speed = 5;
+   float cos_angle = cos(player->angle);
+   float sin_angle = sin(player->angle);
+   float new_x = player->offset_x;
+   float new_y = player->offset_y;
+   
+   if (player->key_up) {
+       new_x += cos_angle * offset_speed;
+       new_y += sin_angle * offset_speed;
+   }
+   else if (player->key_down) {
+       new_x -= cos_angle * offset_speed;
+       new_y -= sin_angle * offset_speed;
+   }
+   else if (player->key_left) {
+       new_x += cos_angle * offset_speed;
+       new_y -= sin_angle * offset_speed;
+   }
+   else if (player->key_right) {
+       new_x -= cos_angle * offset_speed;
+       new_y += sin_angle * offset_speed;
+   }
+   
+   if (!touch_wall(map->map, new_x + 
+               (float)BLOCK_SIZE/2, new_y 
+               + (float)BLOCK_SIZE/2)) {
+       player->offset_x = new_x;
+       player->offset_y = new_y;
+   }
+}
 
-    float cos_angle = cos(player->angle);
-    float sin_angle = sin(player->angle);
-
-    // printf("angle: %f cos: %f  sin: %f \n ", player->angle, cos_angle, sin_angle);
-
-    if (player->rotate_left)
-        player->angle -= angle_speed;
-    if (player->rotate_right)
-        player->angle += angle_speed;
-    if (player->angle > 2 * PI)
-        player->angle = 0;
-    if (player->angle < 0)
-        player->angle = 2 * PI;
-
-    if (player->key_up) {
-        player->offset_x += cos_angle * offset_speed;
-        player->offset_y += sin_angle * offset_speed;
-    }
-    else if (player->key_down) {
-        player->offset_x -= cos_angle * offset_speed;
-        player->offset_y -= sin_angle * offset_speed;
-    }
-    else if (player->key_left) {
-        player->offset_x += cos_angle * offset_speed;
-        player->offset_y -= sin_angle * offset_speed;
-    }
-    else if (player->key_right) {
-        player->offset_x -= cos_angle * offset_speed;
-        player->offset_y += sin_angle * offset_speed;
-    }
+void move_player(t_player *player, t_map *map) {
+   handle_rotation(player);
+   handle_movement(player, map);
 }

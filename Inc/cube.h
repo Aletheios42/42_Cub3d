@@ -37,7 +37,7 @@ int key_press(int , void *);
 int key_release(int , void *);
 
 //PLAYER_C
-void move_player(t_player *);
+void move_player(t_player *, t_map *);
 
 //RENDER_C
 void draw_pov(t_mlx *, t_player *, t_map *);

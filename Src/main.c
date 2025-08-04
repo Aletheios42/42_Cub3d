@@ -44,7 +44,6 @@ int main(int ac, char **av) {
     }
 
     init_mlx(&(game.mlx));
-
     init_player(&(game.player), game.map);
 
     render(&(game.map), &(game.mlx), &(game.player));
