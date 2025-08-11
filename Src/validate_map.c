@@ -48,9 +48,6 @@ e_exit_status normalize_map(t_map *map)
 
 e_exit_status flood_fill(t_map *map, char **visited, int row, int col)
 {
-    printf("i[%d] j[%d] \n",  row, col);
-    printf("valor mapa [%c]\n", map->map[row][col]);
-
     if (row >= map->height || row < 0 || col < 0 || col >= map->width)
         return printf("out of bounds\n"),ERR_MAP_IS_NOT_CLOSE;
     if (map->map[row][col] == ' ')
@@ -92,7 +89,6 @@ e_exit_status check_map_is_closed(t_map *map) {
         visited[i][line_size] = '\0';
     }
     visited[i] = NULL;
-    printf("height[%d] width[%d]\n", map->height, map->width);
     status = flood_fill(map, visited, map->player_pos[1], map->player_pos[0]);
     ft_free_matrix(visited);
     return status;

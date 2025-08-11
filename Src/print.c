@@ -39,18 +39,51 @@ void print_mlx(t_mlx mlx) {
     printf("=================\n");
 }
 
-void print_player(t_player player) {
-    printf("=== PLAYER DEBUG ===\n");
-    printf("offset_x: %.2f\n", player.offset_x);
-    printf("offset_y: %.2f\n", player.offset_y);
-    printf("ray_x: %.2f\n", player.ray_x);
-    printf("ray_y: %.2f\n", player.ray_y);
-    printf("angle: %.4f (%.1f°)\n", player.angle, player.angle * 180.0 / PI);
-    printf("key_up: %d\n", player.key_up);
-    printf("key_down: %d\n", player.key_down);
-    printf("key_right: %d\n", player.key_right);
-    printf("key_left: %d\n", player.key_left);
-    printf("rotate_right: %d\n", player.rotate_right);
-    printf("rotate_left: %d\n", player.rotate_left);
-    printf("====================\n");
+void print_scene(t_scene scene) {
+    printf("=== Scene ===\n");
+
+    printf("Controls:\n");
+    printf("  key_up: %s\n", scene.controls.key_up ? "true" : "false");
+    printf("  key_down: %s\n", scene.controls.key_down ? "true" : "false");
+    printf("  key_right: %s\n", scene.controls.key_right ? "true" : "false");
+    printf("  key_left: %s\n", scene.controls.key_left ? "true" : "false");
+    printf("  rotate_right: %s\n", scene.controls.rotate_right ? "true" : "false");
+    printf("  rotate_left: %s\n", scene.controls.rotate_left ? "true" : "false");
+
+    printf("Parameters:\n");
+    printf("  rotation_speed: %.6f\n", scene.params.rotation_speed);
+    printf("  translation_speed: %d\n", scene.params.trasnlation_speed);
+    printf("  block_size: %d\n", scene.params.block_size);
+    printf("  fieldOfView: %.6f\n", scene.params.fieldOfView);
+
+    printf("Camera:\n");
+    printf("  pos_x: %.6f\n", scene.camera.pos_x);
+    printf("  pos_y: %.6f\n", scene.camera.pos_y);
+    printf("  dir_x: %.6f\n", scene.camera.dir_x);
+    printf("  dir_y: %.6f\n", scene.camera.dir_y);
+    printf("  plane_x: %.6f\n", scene.camera.plane_x);
+    printf("  plane_y: %.6f\n", scene.camera.plane_y);
+}
+
+void print_dda(t_dda dda) {
+    printf("=== DDA State ===\n");
+
+    printf("Map position:     map_x = %d, map_y = %d\n", dda.map_x, dda.map_y);
+
+    printf("Ray direction:    rayDir_x = %.6f, rayDir_y = %.6f\n",
+           dda.rayDir_x, dda.rayDir_y);
+
+    printf("Side distances:   sideDist_x = %.6f, sideDist_y = %.6f\n",
+           dda.sideDist_x, dda.sideDist_y);
+
+    printf("Delta distances:  deltaDist_x = %.6f, deltaDist_y = %.6f\n",
+           dda.deltaDist_x, dda.deltaDist_y);
+
+    printf("Wall distance:    wallDist = %.6f\n", dda.wallDist);
+
+    printf("Step:             step_x = %d, step_y = %d\n",
+           dda.step_x, dda.step_y);
+
+    printf("Hit:              %s\n", dda.hit ? "true" : "false");
+    printf("Side:             %d\n", dda.side);
 }

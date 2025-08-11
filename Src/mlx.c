@@ -25,6 +25,7 @@ int close_window(t_mlx *mlx) {
 void my_pixel_put(t_mlx *mlx, int x, int y, int color) {
     char *dst;
 
+    // printf("ejecutando my_pixel_put con x[%d] y[%d] color[%d]\n", x , y, color);
     if (x >= WIN_WIDTH || y >= WIN_HEIGHT || x < 0 || y < 0)
         return ;
 

@@ -11,6 +11,7 @@ SRC_FILES = main.c 				\
 			handlers.c 			\
 			handlers_utils.c 	\
 			validate_map.c 		\
+			init.c		 		\
 			mlx.c 				\
 			hooks.c 			\
 			render.c 			\

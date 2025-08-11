@@ -7,6 +7,9 @@
 // PARSER_C
 e_exit_status parser(t_map*, char *);
 
+// INIT_C
+void init_scene(t_scene *scene,t_map *map);
+
 // HANDLE_C
 e_exit_status handler_texture(char *, t_map *, t_mealy *);
 e_exit_status handler_color(char *, t_map *, t_mealy *);
@@ -34,24 +37,24 @@ void clear_image(t_mlx *);
 int close_window(t_mlx *);
 
 // MINIMAP_C
-void draw_pov(t_mlx *, t_player *, t_map *);
-void draw_minimap(t_map *map, t_mlx *mlx,  t_player *player);
+// void draw_pov(t_mlx *, t_player *, t_map *);
+// void draw_minimap(t_map *map, t_mlx *mlx,  t_player *player);
 
 //HOOKS_C
 int key_press(int , void *);
 int key_release(int , void *);
 
 //PLAYER_C
-void move_player(t_player *, t_map *);
-void init_player(t_player *player, t_map *map);
+void move_camera(t_scene *scene, t_map *map);
 
 //RENDER_C
-int     touch_wall(char **, float , float);
-e_exit_status   render(t_map *, t_mlx *, t_player *);
+int             touch_wall(char **, float , float);
+e_exit_status   render(t_map *, t_mlx *, t_scene *);
 
 //PRINT_C
 void    print_map(t_map map);
 void    print_mlx(t_mlx mlx);
-void    print_player(t_player player);
+void    print_scene(t_scene scene);
+void    print_dda(t_dda dda);
 
 #endif

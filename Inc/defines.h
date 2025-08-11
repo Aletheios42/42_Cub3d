@@ -24,16 +24,11 @@
 
 // Angulos
 #define PI 3.14169
-#define FOW PI / 6
-#define HALF_FOW FOW / 2
 
 // el ancho y el alto del bloque 
 // tienen que ajustarse con
 // el ancho y la altura del map
 // // con el ancho y la altura de la ventana
-#define BLOCK_SIZE 8
-#define HALF_BLOCK_SIZE (float)BLOCK_SIZE / 2.0f
-#define HITBOX 2
 
 
 // Colores

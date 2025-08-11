@@ -60,7 +60,6 @@ typedef struct s_mealy {
     uint8_t tokens_mask;
 } t_mealy;
 
-
 typedef struct s_map {
     char **map;
     char *texture_no;
@@ -85,34 +84,62 @@ typedef struct s_mlx {
     int     endian;
 } t_mlx;
 
-typedef struct s_player {
-    float offset_x;
-    float offset_y;
+typedef struct s_camera {
+   float pos_x;     // Player position X coordinate on the map
+   float pos_y;     // Player position Y coordinate on the map
+   float dir_x;     // Camera direction vector X component
+   float dir_y;     // Camera direction vector Y component
+   float plane_x;   // Camera plane vector X component (perpendicular to dir)
+   float plane_y;   // Camera plane vector Y component (perpendicular to dir)
+} t_camera;
 
-    float ray_x;
-    float ray_y;
+typedef struct s_params {
+    float rotation_speed;
+    int trasnlation_speed;
+    int block_size;
+    float fieldOfView;
+} t_params;
 
+typedef struct s_controls {
     bool key_up;
     bool key_down;
     bool key_right;
     bool key_left;
     bool rotate_right;
     bool rotate_left;
+} t_controls;
 
-    float angle;
-    float cos_angle;
-    float sin_angle;
-    float angle_speed;
+typedef struct s_scene {
+    t_controls controls;
+    t_params params;
+    t_camera camera;
+} t_scene;
 
-    int offset_speed;
-} t_player;
+typedef struct s_dda {
+    int map_x; // coordenada x de la celda en la que te encuentras
+    int map_y; // coordenada y de la celda en la que te encuentras
 
+    double rayDir_x; //Direccion X del rayo
+    double rayDir_y; //Direccion Y del rayo
 
+    double sideDist_x; //Distancia del rayo a la columna de la celda 
+    double sideDist_y; //Distancia del rayo a la fila de la celda
+
+    double deltaDist_x; //Distancia del rayo a la prixima columna de la rejilla
+    double deltaDist_y; //Distancia del rayo a la prixima fila de la rejilla
+    double wallDist; //Distancia ortogonal a la pared
+
+    int step_x;
+    int step_y;
+    bool hit;
+    int side;
+
+} t_dda;
 
 typedef struct s_game {
     t_map map;
     t_mlx mlx;
-    t_player player;
+    t_scene scene;
 } t_game;
 
 #endif
