@@ -95,7 +95,7 @@ typedef struct s_camera {
 
 typedef struct s_params {
     float rotation_speed;
-    int trasnlation_speed;
+    float trasnlation_speed;
     int block_size;
     float fieldOfView;
 } t_params;

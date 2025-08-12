@@ -45,7 +45,7 @@ int key_press(int , void *);
 int key_release(int , void *);
 
 //PLAYER_C
-void move_camera(t_scene *scene, t_map *map);
+void move_player(t_scene *scene, t_map *map);
 
 //RENDER_C
 int             touch_wall(char **, float , float);

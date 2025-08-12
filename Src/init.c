@@ -13,7 +13,7 @@ void init_controls(t_controls *controls)
 void init_params(t_params *params)
 {
     params->rotation_speed = 0.1;
-    params->trasnlation_speed = 3;
+    params->trasnlation_speed = 0.5f;
     params->block_size = 20;
     params->fieldOfView = PI / 3;  // 60 degrees instead of 30
 }

@@ -61,7 +61,6 @@ e_exit_status handler_mapline(char *line, t_map *map, t_mealy *machine)
     status = valid_mapline(line, map, machine, &width);
     if (status != SUCCESS)
         return status;
-    //este realloc esta mal
     map->height++;
     map->map = realloc(map->map, sizeof(char*) * (map->height + 1));
     if (!map->map)

@@ -52,7 +52,7 @@ void print_scene(t_scene scene) {
 
     printf("Parameters:\n");
     printf("  rotation_speed: %.6f\n", scene.params.rotation_speed);
-    printf("  translation_speed: %d\n", scene.params.trasnlation_speed);
+    printf("  translation_speed: %f\n", scene.params.trasnlation_speed);
     printf("  block_size: %d\n", scene.params.block_size);
     printf("  fieldOfView: %.6f\n", scene.params.fieldOfView);
 

@@ -27,18 +27,19 @@ e_exit_status normalize_map(t_map *map)
     int j;
 
     num_common_spaces = get_common_initial_space(map);
+    map->width -= num_common_spaces;
+    map->player_pos[0] -= num_common_spaces;
     i = -1;
-    //tengo que normalizar aquí
     while (++i < map->height)
     {
-        j = -1;
         normalized_line = (char *)malloc(sizeof(char *) * (map->width + 1));
         if (!normalized_line)
             return ERR_FAIL_MALLOC;
+        j = -1;
         while (map->map[i][++j + num_common_spaces])
             normalized_line[j] = map->map[i][j + num_common_spaces]; 
-        while (j < map->width)
-            normalized_line[j++] = ' ';
+        while (j <= map->width)
+            normalized_line[j++] = '\0';
         normalized_line[j] = '\0';
         free(map->map[i]);
         map->map[i] = normalized_line;
@@ -48,7 +49,8 @@ e_exit_status normalize_map(t_map *map)
 
 e_exit_status flood_fill(t_map *map, char **visited, int row, int col)
 {
-    if (row >= map->height || row < 0 || col < 0 || col >= map->width)
+    if (row >= map->height || row < 0 || col < 0 || col >= (int)strlen(map->map[row])
+)
         return printf("out of bounds\n"),ERR_MAP_IS_NOT_CLOSE;
     if (map->map[row][col] == ' ')
         return printf("espacio encontrado\n"),ERR_MAP_IS_NOT_CLOSE;

@@ -74,9 +74,9 @@ void draw_wall_stripe(t_mlx *mlx, t_dda *dda, int col, t_map *map) {
 
     perpWallDist = dda->wallDist;
     
-    // if (perpWallDist <= 0.0001) {
-    //     perpWallDist = 0.0001;
-    // }
+    if (perpWallDist <= 0.0001) {
+        perpWallDist = 0.0001;
+    }
     
     lineHeight = (int)(WIN_HEIGHT / perpWallDist);
     drawStart = -lineHeight / 2 + WIN_HEIGHT / 2;
@@ -114,6 +114,7 @@ void perform_raycasting(t_map *map, t_mlx *mlx, t_scene *scene) {
 }
 
 e_exit_status render(t_map *map, t_mlx *mlx, t_scene *scene) {
+    move_player(scene, map);
     clear_image(mlx);
     perform_raycasting(map, mlx, scene);
     mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);

@@ -63,6 +63,7 @@ e_exit_status valid_mapline(char *line, t_map *map, t_mealy *machine, int *width
             map->player_pos[0] = *width;
             map->player_pos[1] = map->height;
             map->orientation = *tmp;
+            *tmp = '0';
         }
         (*width)++;
         if (*tmp == '1' && *(tmp + 1) == ' ')
