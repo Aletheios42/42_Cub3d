@@ -15,8 +15,9 @@ SRC_FILES = main.c 				\
 			mlx.c 				\
 			hooks.c 			\
 			render.c 			\
+			raycaster.c 		\
 			minimap.c 			\
-			player.c 			\
+			player_movement.c 	\
 			free.c		 		\
 			print.c
 SRC_DIR = ./Src/

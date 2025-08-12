@@ -8,6 +8,7 @@ void init_controls(t_controls *controls)
     controls->key_left = 0;
     controls->rotate_right = 0;
     controls->rotate_left = 0;
+    controls->menu = 0;
 }
 
 void init_params(t_params *params)
@@ -15,7 +16,7 @@ void init_params(t_params *params)
     params->rotation_speed = 0.1;
     params->trasnlation_speed = 0.5f;
     params->block_size = 20;
-    params->fieldOfView = PI / 3;  // 60 degrees instead of 30
+    params->fieldOfView = PI / 3;  // 60º
 }
 
 void init_camera(t_camera *camera, t_map *map, t_params params)

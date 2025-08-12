@@ -6,6 +6,11 @@
 // Ventana
 #define WIN_HEIGHT 720
 #define WIN_WIDTH 720
+//
+// MENU
+#define MENU_WIDTH   (WIN_WIDTH / 3)
+#define MENU_COLOR         0x74DFA8
+#define MENU_COLOR_STR     0x000000
 
 // Minimap
 #define MINIMAP_HEIGHT WIN_HEIGHT / 10
@@ -21,6 +26,7 @@
 #define KEY_W 119
 #define KEY_ESC 65307
 #define KEY_R 82
+#define KEY_M 109
 
 // Angulos
 #define PI 3.14169

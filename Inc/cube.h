@@ -8,7 +8,7 @@
 e_exit_status parser(t_map*, char *);
 
 // INIT_C
-void init_scene(t_scene *scene,t_map *map);
+void init_scene(t_scene *,t_map *);
 
 // HANDLE_C
 e_exit_status handler_texture(char *, t_map *, t_mealy *);
@@ -22,7 +22,7 @@ e_exit_status handler_eof(char *, t_map *, t_mealy *);
 e_exit_status valid_texture(char *);
 e_exit_status valid_rgb(char *);
 e_exit_status valid_mapline(char *, t_map *, t_mealy *, int *);
-int parse_rgb_to_int(char *rgb_str);
+int parse_rgb_to_int(char *);
 
 // VALIDATE_MAP_C
 e_exit_status validate_map(t_map *);
@@ -40,6 +40,14 @@ int close_window(t_mlx *);
 // void draw_pov(t_mlx *, t_player *, t_map *);
 // void draw_minimap(t_map *map, t_mlx *mlx,  t_player *player);
 
+// RAYCASTING_C
+void init_ray(t_dda *, t_camera *, int );
+void calculate_step_and_sidedist(t_dda *, t_camera *);
+void calculate_wall_distance(t_dda *);
+void perform_dda(t_dda *, t_map *);
+void draw_wall_stripe(t_mlx *, t_dda *, int , t_map *);
+void perform_raycasting(t_map *, t_mlx *, t_scene *);
+
 //HOOKS_C
 int key_press(int , void *);
 int key_release(int , void *);
@@ -48,7 +56,7 @@ int key_release(int , void *);
 void move_player(t_scene *scene, t_map *map);
 
 //RENDER_C
-int             touch_wall(char **, float , float);
+void perform_raycasting(t_map *, t_mlx *, t_scene *);
 e_exit_status   render(t_map *, t_mlx *, t_scene *);
 
 //PRINT_C

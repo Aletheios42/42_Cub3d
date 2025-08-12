@@ -64,6 +64,7 @@
 //     }
 // }
 //
+//
 // void draw_minimap(t_map *map, t_mlx *mlx,  t_player *player)
 // {
 //     draw_squared_map(mlx, map->map);

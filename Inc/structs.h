@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 typedef enum e_exit_status {
     SUCCESS,
@@ -107,6 +108,7 @@ typedef struct s_controls {
     bool key_left;
     bool rotate_right;
     bool rotate_left;
+    bool menu;
 } t_controls;
 
 typedef struct s_scene {

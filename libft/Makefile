@@ -32,6 +32,7 @@ SRC_FILES =	ft_isalpha.c		\
 		ft_isascii.c		\
 		ft_isprint.c		\
 		ft_strlen.c		\
+		ft_swap_char.c		\
 		ft_memset.c 		\
 		ft_bzero.c		\
 		ft_memcpy.c		\
@@ -60,6 +61,7 @@ SRC_FILES =	ft_isalpha.c		\
 		ft_strjoin.c		\
 		ft_strtrim.c		\
 		ft_split.c		\
+		ft_intToStr.c		\
 		ft_itoa.c		\
 		ft_strmapi.c		\
 		ft_striteri.c		\
